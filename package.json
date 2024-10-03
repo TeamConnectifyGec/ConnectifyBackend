@@ -21,7 +21,8 @@
     "mongoose": "^8.6.2",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "vercel": "^37.6.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"
