@@ -8,11 +8,9 @@ exports.emailVerification = async (req, res) => {
     console.log(token);
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log(decoded);
 
         // Find the unverified user by ID from the decoded token
         const uv_user = await UV_User.findById(decoded.id);
-        console.log(uv_user);
 
         if (!uv_user) {
             return res.status(400).sendFile(path.join(__dirname, '../public/invalidToken.html'));

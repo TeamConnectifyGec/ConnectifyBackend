@@ -18,7 +18,6 @@ exports.signup = async (req, res) => {
     if(usernameExists && emailExists) {
       
       const user = await User.findOne({ username });
-      console.log(`in check if user has been registerd\n ${user}`)
       if (user && (await user.matchPassword(password))) {
         return res.status(201).json({
           userid: user._id,
@@ -55,6 +54,14 @@ exports.signup = async (req, res) => {
       },token);
       return res.status(200).json({
         message:`Verification email sent to ${user.email}`,
+      });
+    }
+    
+    // if the unverified user exists
+    if(uv_emailExists && uv_usernameExists){
+
+      return res.status(200).json({
+        message:`Verification email sent to ${uv_usernameExists.email}`
       });
     }
 

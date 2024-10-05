@@ -2,10 +2,10 @@
 - `npm install`
 
 **To start the server run in devlopment mode**
- - `npm run dev`
+- `npm run dev`
 
 **To start the server in deployment mode**
-`npm run app`
+- `npm run app`
 
 ### API Documentation
 
