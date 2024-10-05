@@ -12,6 +12,7 @@ exports.emailVerification = async (req, res) => {
         // Find the unverified user by ID from the decoded token
         const uv_user = await UV_User.findById(decoded.id);
 
+        console.log('in email verification controller');
         if (!uv_user) {
             return res.status(400).sendFile(path.join(__dirname, '../public/invalidToken.html'));
         }
@@ -23,9 +24,13 @@ exports.emailVerification = async (req, res) => {
             password: uv_user.password,
         });
 
+        console.log(` uv user \n${uv_user}`);
+
         // Save the new user and delete the unverified user
         await newUser.save();
         await UV_User.findByIdAndDelete(decoded.id);
+
+        console.log(` new user \n${newUser}`);
 
         // Send the HTML file upon successful verification
         res.status(200).sendFile(path.join(__dirname, '../public/emailVerified.html'));

@@ -28,14 +28,29 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 };
 
 userSchema.pre('save', async function (next) {
+  // If the password field is not modified, skip the hashing process
   if (!this.isModified('password')) {
-    next();
+    return next();
   }
 
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-});
+  try {
+    // Check if the user already exists in the database
+    const existingUser = await User.findOne({ email: this.email });
 
+    if (existingUser) {
+      // If the user exists, hash the password
+      const salt = await bcrypt.genSalt(10);
+      this.password = await bcrypt.hash(this.password, salt);
+    } else {
+      // If the user does not exist, assume the password is already hashed
+      console.log('User does not exist, assuming password is already hashed');
+    }
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

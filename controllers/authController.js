@@ -18,6 +18,9 @@ exports.signup = async (req, res) => {
     if(usernameExists && emailExists) {
       
       const user = await User.findOne({ username });
+      // console.log(user);
+      // console.log(`${password}   ${user.password}`);
+
       if (user && (await user.matchPassword(password))) {
         return res.status(201).json({
           userid: user._id,
@@ -87,7 +90,7 @@ exports.login = async (req, res) => {
         token: generateToken(user._id),
       });
     } else {
-      res.status(401).json({ message: 'Invalid email or password' });
+      res.status(401).json({ message: 'Invalid username or password' });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
