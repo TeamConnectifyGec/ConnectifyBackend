@@ -36,6 +36,6 @@ uv_userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-const UV_User = mongoose.model('UnVerifiedUser', userSchema);
+const UV_User = mongoose.model('UnVerifiedUser', uv_userSchema);
 
 module.exports = UV_User;

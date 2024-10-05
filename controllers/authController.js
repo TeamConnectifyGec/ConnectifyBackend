@@ -1,37 +1,68 @@
 const User = require('../models/userModel');
+const UV_User = require('../models/unverifiedUserModel');
 const generateToken = require('../utils/generateToken');
+const generateEmailVerificationToken = require('../utils/generateEmailVerificationToken');
+const sendVerificationEmail = require('../utils/sendVerificationEmail');
 
 
 exports.signup = async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    // Check if username already exists
+    
     const usernameExists = await User.findOne({ username });
-    if (usernameExists) {
-      return res.status(400).json({ message: 'Username already taken' });
-    }
-
-    // Check if email already exists
     const emailExists = await User.findOne({ email });
-    if (emailExists) {
-      return res.status(400).json({ message: 'Email already registered' });
+    
+    // check if user has been registerd 
+    // basiclly we check if the user exists in the database and passwords match 
+    if(usernameExists && emailExists) {
+      
+      const user = await User.findOne({ username });
+      console.log(`in check if user has been registerd\n ${user}`)
+      if (user && (await user.matchPassword(password))) {
+        return res.status(201).json({
+          userid: user._id,
+          username: user.username,
+          email: user.email,
+          token: generateToken(user._id),
+          message: "User registered",
+        });
+      }
     }
 
-    // Create a new user if both username and email are unique
-    const user = new User({ username, email, password });
-    await user.save();
+    // Check if username already exists
+    if (usernameExists) {
+      return res.status(409).json({ message: 'Username already taken' });
+    }
+    // Check if email already exists
+    if (emailExists) {
+      return res.status(409).json({ message: 'Email already registered' });
+    }
+    
+    const uv_usernameExists = await UV_User.findOne({ username });
+    const uv_emailExists = await UV_User.findOne({ email });
+    // Create a new un-verified user if both username and email are unique
+    if (!uv_usernameExists || !uv_emailExists) {
+      
+      const user = new UV_User({ username, email, password });
+      await user.save();
 
-    // Respond with the new user's details and token
-    res.status(201).json({
-      userid: user._id,
-      username: user.username,
-      email: user.email,
-      token: generateToken(user._id),
-    });
+      const token = await generateEmailVerificationToken(user._id);
+    
+      await sendVerificationEmail({
+        username: user.username,
+        email: user.email
+      },token);
+      return res.status(200).json({
+        message:`Verification email sent to ${user.email}`,
+      });
+    }
+
+    return res.status(500).json({ message: 'An unexpected error occurred' });
 
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.log('catch error');
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -40,7 +71,6 @@ exports.login = async (req, res) => {
 
   try {
     const user = await User.findOne({ username });
-    console.log(user);
 
     if (user && (await user.matchPassword(password))) {
       res.json({
@@ -53,6 +83,6 @@ exports.login = async (req, res) => {
       res.status(401).json({ message: 'Invalid email or password' });
     }
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
