@@ -1,189 +1,74 @@
-To install all the dependencies in package.json
+**To install all the dependencies in package.json**
+- `npm install`
 
-npm install
+**To start the server run in devlopment mode**
+ - `npm run dev`
 
-To start the server run in devlopment mode
+**To start the server in deployment mode**
+`npm run app`
 
-npm run dev
+### API Documentation
 
-To start the server in release mode
+**Base URL:** `https://server-url.app/api/`
 
-npm run app
+---
 
-
- Base URL
-
-http://localhost:3000/api/
-
-For autentication 
-
-Base URL
-
-http://localhost:3000/api/auth
-
-
- Endpoints
-
- 1. User Signup
-
-- URL: `/signup`
-- Method: `POST`
-- Description: Creates a new user account.
-- Request Headers:
-  - `Content-Type: application/json`
-- Request Body:
-  json
-  {
-    "name": "John Doe",
-    "email": "john.doe@example.com",
-    "password": "password123"
-  }
+### 1. API Route: `/auth/signup`
+- **Method**: `POST`
+- **Purpose**: Register a new user by signing up. If the username or email already exists, an error message will be returned. If registration is successful, a verification email will be sent.
+- **Request Body**:
+  - `username`: String (required)
+  - `email`: String (required)
+  - `password`: String (required)
   
-- Response:
-  - Success (201 - Created):
-    json
+- **Response**:
+  - **200**: `Verification email sent to {email}`
+  - **409**: `Username already taken`
+  - **409**: `Email already registered`
+  - **201**: 
+    ```json
     {
-      "_id": "60d0fe4f5311236168a109ca",
-      "name": "John Doe",
-      "email": "john.doe@example.com",
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      "userid": "user_id",
+      "username": "username",
+      "email": "email",
+      "token": "JWT_token",
+      "message": "User registered"
     }
-    
-    - *Description*: User registered successfully, JWT token provided for authentication.
-  - Error (400 - Bad Request):
-    json
-    {
-      "message": "Error message"
-    }
-    
-    - *Description*: Registration failed due to invalid or incomplete request data.
+    ```
+  - **500**: `An unexpected error occurred` or specific error message
 
+---
 
-
- 2. User Login
-
-- URL: `/login`
-- Method: `POST`
-- Description: Authenticates an existing user and returns a JWT token.
-- Request Headers:
-  - `Content-Type: application/json`
-- Request Body:
-  json
-  {
-    "email": "john.doe@example.com",
-    "password": "password123"
-  }
+### 2. API Route: `/auth/login`
+- **Method**: `POST`
+- **Purpose**: Log in an existing user by checking username and password. If valid, return user details and a JWT token.
+- **Request Body**:
+  - `username`: String (required)
+  - `password`: String (required)
   
-- Response:
-  - Success (200 - OK):
-    json
+- **Response**:
+  - **200**: 
+    ```json
     {
-      "_id": "60d0fe4f5311236168a109ca",
-      "name": "John Doe",
-      "email": "john.doe@example.com",
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      "userid": "user_id",
+      "username": "username",
+      "email": "email",
+      "token": "JWT_token"
     }
-    
-    - *Description*: User authenticated successfully, JWT token returned.
-  - Error (401 - Unauthorized):
-    json
-    {
-      "message": "Invalid email or password"
-    }
-    
-    - *Description*: Authentication failed due to incorrect credentials.
-  - Error (400 - Bad Request):
-    json
-    {
-      "message": "Error message"
-    }
-    
-    - *Description*: Invalid request data, such as a missing email or password field.
+    ```
+  - **401**: `Invalid email or password`
+  - **500**: Specific error message
 
+---
 
+### 3. API Route: `/auth/email-verify`
+- **Method**: `GET`
+- **Purpose**: Verify the user's email using the token provided via the query parameter. 
+               (must be used outside of the app. onyl for email verification)
+- **Request Query Parameters**:
+  - `token`: String (required)
 
- Sample Requests and Responses
-
- Signup Example
-
- Request:
-http
-POST /api/auth/signup
-Content-Type: application/json
-
-{
-  "name": "John Doe",
-  "email": "john.doe@example.com",
-  "password": "password123"
-}
-
-
- Response (201 - Created):
-json
-{
-  "_id": "60d0fe4f5311236168a109ca",
-  "name": "John Doe",
-  "email": "john.doe@example.com",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-
-
-
-
- Login Example
-
- Request:
-http
-POST /api/auth/login
-Content-Type: application/json
-
-{
-  "email": "john.doe@example.com",
-  "password": "password123"
-}
-
-
- Response (200 - OK):
-json
-{
-  "_id": "60d0fe4f5311236168a109ca",
-  "name": "John Doe",
-  "email": "john.doe@example.com",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-
-
-
-
- Error Codes
-
-| Status Code | Description                               |
-|-|-|
-| 201     | User created successfully                 |
-| 200     | User authenticated successfully           |
-| 400     | Bad request (e.g., missing/invalid data)  |
-| 401     | Unauthorized (invalid credentials)        |
-
-
-
- Authentication Workflow
-
-1. Signup: Clients should use the `/signup` route to create a new user account.
-   - After successful signup, the server responds with a JWT token. This token must be saved and used for further authenticated requests.
-  
-2. Login: Existing users should authenticate using the `/login` route.
-   - A successful login also returns a JWT token that can be used to access protected endpoints.
-
-
-
- Security Considerations
-
-- JWT Tokens: Tokens should be sent in the `Authorization` header of requests to protected routes.
-  - Example: `Authorization: Bearer <token>`
-  
-- Password Hashing: User passwords are securely hashed before being stored in the database using `bcryptjs`.
-
-- Environment Variables: Ensure sensitive data such as `JWT_SECRET` and `MONGO_URI` are stored in environment variables.
-
-
+- **Response**:
+  - **200**: On successful verification, an HTML file is sent to confirm email verification.
+  - **400**: On invalid or expired token, an HTML file is sent indicating email verification failure.
 
