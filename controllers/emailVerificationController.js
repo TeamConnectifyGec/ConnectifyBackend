@@ -30,7 +30,7 @@ exports.emailVerification = async (req, res) => {
         await UV_User.findByIdAndDelete(decoded.id);
 
         // Send the HTML file upon successful verification
-        res.sendFile(path.join(__dirname, '../public/emailVerified.html'));
+        res.status(200).sendFile(path.join(__dirname, '../public/emailVerified.html'));
 
     } catch (error) {
         res.status(400).sendFile(path.join(__dirname, '../public/emailNotVerified.html'));
