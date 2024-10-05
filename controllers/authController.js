@@ -18,8 +18,6 @@ exports.signup = async (req, res) => {
     if(usernameExists && emailExists) {
       
       const user = await User.findOne({ username });
-      // console.log(user);
-      // console.log(`${password}   ${user.password}`);
 
       if (user && (await user.matchPassword(password))) {
         return res.status(201).json({
@@ -71,7 +69,6 @@ exports.signup = async (req, res) => {
     return res.status(500).json({ message: 'An unexpected error occurred' });
 
   } catch (error) {
-    console.log('catch error');
     return res.status(500).json({ message: error.message });
   }
 };

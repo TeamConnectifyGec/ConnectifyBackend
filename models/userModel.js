@@ -41,10 +41,7 @@ userSchema.pre('save', async function (next) {
       // If the user exists, hash the password
       const salt = await bcrypt.genSalt(10);
       this.password = await bcrypt.hash(this.password, salt);
-    } else {
-      // If the user does not exist, assume the password is already hashed
-      console.log('User does not exist, assuming password is already hashed');
-    }
+    } 
 
     next();
   } catch (error) {
