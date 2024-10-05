@@ -16,7 +16,7 @@ const sendVerificationEmail = async (user, token) => {
     html: `
       <h2>Hello ${user.username}</h2>
       <p>Please verify your email address by clicking the button below:</p>
-      <a href="https://${process.env.SERVER_BASE_LINK}/auth/verify-email?token=${token}" style="text-decoration: none;">
+      <a href="https://${process.env.SERVER_BASE_LINK}/auth/email-verify?token=${token}" style="text-decoration: none;">
         <button style="
           background-color: #4CAF50; /* Green */
           border: none;
