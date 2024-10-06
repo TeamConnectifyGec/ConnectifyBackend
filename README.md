@@ -80,7 +80,8 @@
 
 ### Indeirectly implemented apis
 
---
+---
+
 ### 1. API Route: `/auth/email-verify`
 - **Method**: `GET`
 - **Purpose**: Verify the user's email using the token provided via the query parameter. 
