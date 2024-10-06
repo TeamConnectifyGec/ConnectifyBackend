@@ -5,7 +5,7 @@ const {forgotPassword} = require('../controllers/forgetPasswordController');
 const {resetPasswordForm} = require('../middleware/resetPasswordForm');
 const {resetPasswordController} = require('../controllers/resetPasswordController');
 
-router.get('/forgot-password',forgotPassword);
+router.post('/forgot-password',forgotPassword);
 
 router.get('/reset-password', resetPasswordForm);
 
