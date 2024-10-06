@@ -1,7 +1,7 @@
 const User = require('../models/userModel');
 const UV_User = require('../models/unverifiedUserModel');
 const generateToken = require('../utils/generateToken');
-const generateEmailVerificationToken = require('../utils/generateEmailVerificationToken');
+const generateVerificationToken = require('../utils/generateVerificationToken');
 const sendVerificationEmail = require('../utils/sendVerificationEmail');
 
 
@@ -47,7 +47,7 @@ exports.signup = async (req, res) => {
       const user = new UV_User({ username, email, password });
       await user.save();
 
-      const token = await generateEmailVerificationToken(user._id);
+      const token = await generateVerificationToken(user._id);
     
       await sendVerificationEmail({
         username: user.username,

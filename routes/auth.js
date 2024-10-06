@@ -7,4 +7,5 @@ router.post('/signup', signup);
 router.post('/login', login);
 router.get('/email-verify',emailVerification);
 
+
 module.exports = router;
