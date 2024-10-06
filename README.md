@@ -65,7 +65,7 @@
 
 ---
 
-### 3. API Route: `/forgot-password`
+### 3. API Route: `/password/forgot-password`
 - **Method**: `GET`
 - **Purpose**: Request a password reset by submitting the user's email. If the email exists, a verification email is sent with a reset token.
 - **Request Body**:
@@ -94,7 +94,7 @@
 
 ---
 
-### 2. API Route: `/reset-password`
+### 2. API Route: `/password/reset-password`
 - **Method**: `GET`
 - **Purpose**: Display the reset password form when a valid token is provided.
 - **Request Query Parameters**:
@@ -109,7 +109,7 @@
 
 ---
 
-### 3. API Route: `/reset-password`
+### 3. API Route: `/password/reset-password`
 - **Method**: `POST`
 - **Purpose**: Reset the user's password using the provided token and new password.
 - **Request Body**:
