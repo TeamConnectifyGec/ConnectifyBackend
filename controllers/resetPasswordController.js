@@ -23,9 +23,9 @@ exports.resetPasswordController = async (req, res) => {
 
     // Update the user's password
     const salt = await bcrypt.genSalt(10);
-    password = await bcrypt.hash(password, salt);
+    hashedPassword = await bcrypt.hash(password, salt);
 
-    user.password = password;
+    user.password = hashedPassword;
 
     // Save user and check for errors
     await user.save();
