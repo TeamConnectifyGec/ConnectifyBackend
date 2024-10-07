@@ -1,6 +1,6 @@
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
-
+const bcrypt = require('bcryptjs');
 
 exports.resetPasswordController = async (req, res) => {
   const { token, password } = req.body;
@@ -12,32 +12,35 @@ exports.resetPasswordController = async (req, res) => {
 
   try {
       // Verify the token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // Fetch the user from the database
-      const user = await User.findById(decoded.id);
+    const user = await User.findById(decoded.id);
 
-      if (!user) {
-          return res.status(404).send('User not found');
-      }
+    if (!user) {
+        return res.status(404).send('User not found');
+    }
 
-      // Update the user's password
-      user.password = password;
+    // Update the user's password
+    const salt = await bcrypt.genSalt(10);
+    password = await bcrypt.hash(password, salt);
 
-      // Save user and check for errors
-      await user.save();
+    user.password = password;
 
-      res.status(200).send('Password has been reset successfully');
-  } catch (error) {
+    // Save user and check for errors
+    await user.save();
 
-      // Handle specific token errors
-      if (error.name === 'TokenExpiredError') {
-          res.status(401).send('Token has expired');
-      } else if (error.name === 'JsonWebTokenError') {
-          res.status(401).send('Invalid token');
-      } else {
-          res.status(500).send('An error occurred while resetting the password');
-      }
-  }
+    res.status(200).send('Password has been reset successfully');
+    } catch (error) {
+
+        // Handle specific token errors
+        if (error.name === 'TokenExpiredError') {
+            res.status(401).send('Token has expired');
+        } else if (error.name === 'JsonWebTokenError') {
+            res.status(401).send('Invalid token');
+        } else {
+            res.status(500).send('An error occurred while resetting the password');
+        }
+    }
 };
 
