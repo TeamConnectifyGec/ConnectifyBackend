@@ -37,7 +37,7 @@ userSchema.pre('save', async function (next) {
     // Check if the user already exists in the database
     const existingUser = await User.findOne({ email: this.email });
 
-    if (existingUser) {
+    if (!existingUser) {
       // If the user exists, hash the password
       const salt = await bcrypt.genSalt(10);
       this.password = await bcrypt.hash(this.password, salt);
