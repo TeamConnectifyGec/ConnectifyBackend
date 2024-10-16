@@ -9,6 +9,8 @@ exports.emailVerification = async (req, res) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+        console.log("token: "+ token)
+
         // Find the unverified user by ID from the decoded token
         const uv_user = await UV_User.findById(decoded.id);
 
