@@ -1,5 +1,4 @@
 const User = require("../models/userModel"); // Assuming the User model is in the models directory
-const upload = require("../config/cloudinaryConfig"); // Import Cloudinary middleware
 const cloudinary = require("cloudinary");
 
 exports.updateUser = async (req, res) => {
@@ -19,14 +18,20 @@ exports.updateUser = async (req, res) => {
       }
 
       const updatedUser = await user.save();
-      res.json(updatedUser);
+
+      // Exclude the password from the response
+      const userWithoutPassword = updatedUser.toObject();
+      delete userWithoutPassword.password;
+
+      res.status(200).json(userWithoutPassword);
     } else {
       res.status(404).json({ message: 'User not found' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error });
   }
 };
+
 
 
 exports.getUserById = async (req, res) => {
