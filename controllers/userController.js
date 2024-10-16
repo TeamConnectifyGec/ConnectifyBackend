@@ -6,15 +6,14 @@ exports.updateUser = async (req, res) => {
     const user = await User.findById(req.user._id);
 
     if (user) {
-      // Update fields based on what's in the request
+      // Update user fields based on the request
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
       user.bio = req.body.bio || user.bio;
 
-      // Handle profile picture update if provided
+      // If a file (profile picture) is uploaded, update the pfp_link
       if (req.file) {
-        const result = await cloudinary.uploader.upload(req.file.path);
-        user.pfp_link = result.secure_url;
+        user.pfp_link = req.file.path; // Cloudinary file URL is in req.file.path
       }
 
       const updatedUser = await user.save();
@@ -28,6 +27,7 @@ exports.updateUser = async (req, res) => {
       res.status(404).json({ message: 'User not found' });
     }
   } catch (error) {
+    console.error("Update Error:", error);
     res.status(500).json({ message: 'Server error', error });
   }
 };
