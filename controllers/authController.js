@@ -49,6 +49,8 @@ exports.signup = async (req, res) => {
 
       const token = await generateVerificationToken(user._id);
     
+      console.log("token in signup : " + token);
+
       await sendVerificationEmail({
         username: user.username,
         email: user.email

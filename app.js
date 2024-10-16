@@ -20,12 +20,12 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api', (req, res, next) => {
-  if (req.path.startsWith('/auth') || req.path.startsWith('/password')) {
-    return next();
-  }
-  return authMiddleware(req, res, next);
-});
+// app.use('/api', (req, res, next) => {
+//   if (req.path.startsWith('/auth') || req.path.startsWith('/password')) {
+//     return next();
+//   }
+//   return authMiddleware(req, res, next);
+// });
 
 // Routes
 app.use('/', indexRouter);
