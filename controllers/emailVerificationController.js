@@ -35,6 +35,7 @@ exports.emailVerification = async (req, res) => {
         res.status(200).sendFile(path.join(__dirname, '../public/emailVerified.html'));
 
     } catch (error) {
+        console.log(error)
         res.status(400).sendFile(path.join(__dirname, '../public/emailNotVerified.html'));
     }
 };
