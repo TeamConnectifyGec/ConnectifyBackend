@@ -14,6 +14,7 @@ exports.emailVerification = async (req, res) => {
 
         // Find the unverified user by ID from the decoded token
         const uv_user = await UV_User.findById(decoded.id);
+        console.log(uv_user);
 
         if (!uv_user) {
             return res.status(401).sendFile(path.join(__dirname, '../public/invalidToken.html'));
