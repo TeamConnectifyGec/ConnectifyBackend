@@ -1,5 +1,6 @@
 const User = require("../models/userModel"); // Assuming the User model is in the models directory
 const upload = require("../config/cloudinaryConfig"); // Import Cloudinary middleware
+const cloudinary = require("cloudinary");
 
 exports.updateUser = async (req, res) => {
   try {

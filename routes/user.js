@@ -5,7 +5,7 @@ const {getUserById, updateUser} = require('../controllers/userController');
 const upload = require('../config/cloudinaryConfig');  // Cloudinary upload middleware
 
 
-router.put('/profile', upload.single('pfp'), updateUser);
+router.put('/profile', updateUser);
 
 router.get('/profile', getUserById);
 
