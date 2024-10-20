@@ -1,6 +1,6 @@
-const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer');
 
 // Configure Cloudinary with your credentials
 cloudinary.config({
@@ -9,15 +9,21 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Set up Cloudinary storage for multer
+// Set up dynamic Cloudinary storage for multer
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: {
-    folder: 'user_profile_pictures',  // Folder where the images will be stored
-    allowed_formats: ['jpeg', 'png', 'jpg'],
+  params: async (req, file) => {
+    const folderName = req.body.folder || 'general';  // Dynamically set folder based on request
+
+    return {
+      folder: folderName,  // Upload to the specified folder
+      allowed_formats: ['jpeg', 'png', 'jpg'],
+    };
   },
 });
 
+
 const upload = multer({ storage: storage });
 
-module.exports = upload;  // Export the configured multer instance
+exports.cloudinary = cloudinary;
+exports.upload = upload;

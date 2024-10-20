@@ -16,10 +16,6 @@ const postSchema = new mongoose.Schema(
       type: Number,
       default: 0,  
     },
-    created_on: {
-      type: Date,
-      default: Date.now, 
-    },
     visibility: {
       type: String,
       enum: ['public', 'private'],  // Post visibility options
@@ -32,7 +28,10 @@ const postSchema = new mongoose.Schema(
     post_image_link: {
       type: String,  // Store URL to the post image if there is one
       default: null,  // Default to null if no image is provided
-    }
+    },
+    post_hashes: {
+      type: [],
+    },
   },
   {
     timestamps: true,  

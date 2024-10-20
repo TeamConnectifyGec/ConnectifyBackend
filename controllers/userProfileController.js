@@ -1,5 +1,5 @@
 const User = require("../models/userModel"); // Assuming the User model is in the models directory
-const cloudinary = require("cloudinary");
+const {cloudinary }= require('../config/cloudinaryConfig')
 
 exports.updateUser = async (req, res) => {
   try {
@@ -8,19 +8,28 @@ exports.updateUser = async (req, res) => {
     if (user) {
       // Update user fields based on the request
       user.name = req.body.name || user.name;
-      user.email = req.body.email || user.email;
       user.bio = req.body.bio || user.bio;
 
-      // If a file (profile picture) is uploaded, update the pfp_link
       if (req.file) {
-        user.pfp_link = req.file.path; // Cloudinary file URL is in req.file.path
+        // Extract the public_id from the current pfp_link if it exists
+        const currentPfpPublicId = user.pfp_link
+          ? user.pfp_link.split('/').pop().split('.')[0] // Get public_id from the URL
+          : null;
+
+        console.log(req.file);
+
+        // Set the new image URL to the user's profile
+        user.pfp_link = req.file.path; // Cloudinary path set by multer
+
+        // If there is an old profile picture, delete it from Cloudinary
+        if (currentPfpPublicId && currentPfpPublicId !== 'default-profile') {
+          await cloudinary.uploader.destroy(currentPfpPublicId);
+        }
       }
-
       const updatedUser = await user.save();
-
-      // Exclude the password from the response
       const userWithoutPassword = updatedUser.toObject();
       delete userWithoutPassword.password;
+
 
       res.status(200).json(userWithoutPassword);
     } else {
