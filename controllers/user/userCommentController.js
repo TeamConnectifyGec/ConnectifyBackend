@@ -1,5 +1,5 @@
-const Comment = require('../models/commentModel');
-const Post = require('../models/postModel');
+const Comment = require('../../models/commentModel');
+const Post = require('../../models/postModel');
 
 // Add a comment to a post
 exports.createComment = async (req, res) => {
@@ -24,6 +24,25 @@ exports.createComment = async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 };
+
+exports.getAllUserComments = async (req, res) => {
+  const userId = req.user._id; // Assuming userId is available from a logged-in session or token
+
+  try {
+    // Find all comments made by the user
+    const comments = await Comment.find({ user_id: userId });
+
+    if (!comments.length) {
+      return res.status(404).json({ message: 'No comments found for this user' });
+    }
+
+    return res.status(200).json({ comments });
+  } catch (error) {
+    console.error('Error fetching user comments:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 
 // Get all comments for a specific post
 exports.getCommentsByPost = async (req, res) => {

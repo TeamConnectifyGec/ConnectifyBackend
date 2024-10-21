@@ -1,5 +1,5 @@
-const User = require("../models/userModel"); // Assuming the User model is in the models directory
-const {cloudinary }= require('../config/cloudinaryConfig')
+const User = require("../../models/userModel"); // Assuming the User model is in the models directory
+const {cloudinary }= require('../../config/cloudinaryConfig')
 
 exports.updateUser = async (req, res) => {
   try {
