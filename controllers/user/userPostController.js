@@ -3,7 +3,7 @@ const cloudinary = require('../../config/cloudinaryConfig');
 
 exports.createPost = async (req, res) => {
   try {
-    const { post_title, visibility, community_id, post_hashes } = req.body;
+    const { post_title, post_content, visibility, community_id, post_hashes } = req.body;
     const userId = req.user._id;
 
     // Ensure required fields are provided
@@ -15,6 +15,7 @@ exports.createPost = async (req, res) => {
     let newPost = new Post({
       user_id: userId,
       post_title,
+      post_content,
       visibility: visibility || 'public', // Default visibility to public if not provided
       community_id: community_id || null, // Optional community reference
       post_hashes: post_hashes || [], // Optional post hashes (empty array if not provided)

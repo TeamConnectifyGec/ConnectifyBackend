@@ -12,6 +12,10 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    post_content: {
+      type: String,
+      default: '',
+    },
     post_points: {
       type: Number,
       default: 0,  
