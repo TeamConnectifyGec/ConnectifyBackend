@@ -16,6 +16,8 @@ const app = express();
 connectDB();
 
 // Middleware
+var cors = require('cors');
+app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
