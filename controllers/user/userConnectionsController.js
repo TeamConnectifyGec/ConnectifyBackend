@@ -45,7 +45,7 @@ exports.addConnection =  async (req, res) => {
 
 // Route to get a user's connections
 exports.getConnections = async (req, res) => {
-  const { userId } = req.user._id;
+  const userId  = req.user._id;
 
   try {
     // Check if the user exists
