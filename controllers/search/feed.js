@@ -28,7 +28,6 @@ exports.getUserFeed = async (req, res) => {
 
     // Send the posts as the feed
     res.status(200).json({
-      message: 'Feed fetched successfully',
       posts
     });
   } catch (error) {
