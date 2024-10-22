@@ -27,9 +27,7 @@ exports.getUserFeed = async (req, res) => {
     }).sort({ createdAt: -1 });  // Assuming there's a createdAt field to sort by recent posts
 
     // Send the posts as the feed
-    res.status(200).json({
-      posts
-    });
+    res.status(200).json(posts);
   } catch (error) {
     console.error(`Error fetching feed: ${error.message}`);
     res.status(500).json({ message: 'Server error' });
