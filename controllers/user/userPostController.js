@@ -6,7 +6,7 @@ exports.createPost = async (req, res) => {
     const { post_title, post_content, visibility, community_id, post_hashes } = req.body;
     const userId = req.user._id;
 
-      console.log(req,body);
+      console.log(req.body);
     // Ensure required fields are provided
     if (!post_title) {
       return res.status(400).json({ message: 'Post title is required' });
