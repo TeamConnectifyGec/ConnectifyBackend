@@ -6,13 +6,13 @@ const {searchCommunities} = require('../controllers/search/searchCommunitiesCont
 const {getComments} = require('../controllers/search/searchCommentsController');
 const {getUserFeed} = require('../controllers/search/feed');
 
-router.get('/users', searchUsers);
+router.post('/users', searchUsers);
 
-router.get('/posts', searchPosts);
+router.post('/posts', searchPosts);
 
-router.get('/communities', searchCommunities);
+router.post('/communities', searchCommunities);
 
-router.get('/comments', getComments);
+router.post('/comments', getComments);
 
 router.get('/feed', getUserFeed);
 
