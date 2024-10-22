@@ -16,6 +16,10 @@ const commentSchema = new mongoose.Schema(
       type: String,
       required: true,  
     },
+    comment_points: {
+      type: Number,
+      default: 0,  
+    },
   },
   {
     timestamps: true,  

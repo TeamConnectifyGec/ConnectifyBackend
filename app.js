@@ -9,6 +9,8 @@ const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const passwordRouter = require('./routes/password');
 const userRouter = require('./routes/user');
+const searchRouter = require('./routes/search');
+const {createCommunity} = require('./controllers/communityController')
 
 const app = express();
 
@@ -34,6 +36,8 @@ app.use('/', indexRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/password', passwordRouter);
 app.use('/api/user',userRouter);
+app.use('/api/search',searchRouter);
+app.use('/api/communities/create',createCommunity);
 
 // Error handling middleware
 app.use(errorHandler);

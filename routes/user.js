@@ -5,6 +5,7 @@ const {getUserById, updateUser} = require('../controllers/user/userProfileContro
 const {createPost, getAllUserPosts} = require('../controllers/user/userPostController');
 const {createComment, getAllUserComments} = require('../controllers/user/userCommentController')
 const {addConnection,getConnections,getConnectionsCount} = require('../controllers/user/userConnectionsController');
+const {getUserCommunities,getUserJoinedCommunitiesCount,joinCommunity} = require('../controllers/user/userCommunitiesController');
 
 // profile
 router.put('/profile', upload.single('file'), updateUser);
@@ -28,5 +29,11 @@ router.get('/connections/all', getConnections);
 
 router.get('/connections/count', getConnectionsCount);
 
+//communities
+router.get('/communities/join', joinCommunity);
+
+router.get('/communities/all', getUserCommunities);
+
+router.get('/communities/count', getUserJoinedCommunitiesCount);
 
 module.exports = router;

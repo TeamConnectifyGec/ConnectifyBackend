@@ -47,7 +47,7 @@ exports.getAllUserComments = async (req, res) => {
 // Get all comments for a specific post
 exports.getCommentsByPost = async (req, res) => {
   try {
-    const comments = await Comment.find({ post_id: req.params.post_id }).populate('user_id', 'username');
+    const comments = await Comment.find({ post_id: req.body.post_id }).populate('user_id', 'username');
 
     if (comments.length === 0) {
       return res.status(404).json({ message: 'No comments found for this post' });
