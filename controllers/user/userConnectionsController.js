@@ -84,7 +84,7 @@ exports.getConnectionsCount = async (req, res) => {
       status: 'accepted',
     });
 
-    return res.status(200).json({ connectionCount });
+    return res.status(200).json({ count: connectionCount });
   } catch (error) {
     console.error('Error counting connections:', error);
     return res.status(500).json({ message: 'Internal server error' });
