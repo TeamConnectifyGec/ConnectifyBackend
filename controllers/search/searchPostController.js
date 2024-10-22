@@ -14,8 +14,8 @@ exports.searchPosts = async (req, res) => {
         { post_title: { $regex: searchTerm, $options: 'i' } },  // Case-insensitive search on post title
         { post_hashes: { $in: [searchTerm] } }  // Check if the search term exists in the post_hashes array
       ]
-    }).populate('user_id', 'username name')  // Optionally populate the user who created the post
-      .select('post_title post_content post_hashes post_image_link visibility post_points createdAt');  // Select the fields to return
+    }).populate('user_id', 'username name pfp_link')  // Optionally populate the user who created the post
+        // Select the fields to return
 
     // If no posts are found, return a message
     if (posts.length === 0) {
