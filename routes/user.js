@@ -23,14 +23,14 @@ router.post('/create-comment', createComment );
 router.get('/comments', getAllUserComments);
 
 //connections
-router.get('/connections/add', addConnection);
+router.post('/connections/add', addConnection);
 
 router.get('/connections/all', getConnections);
 
 router.get('/connections/count', getConnectionsCount);
 
 //communities
-router.get('/communities/join', joinCommunity);
+router.post('/communities/join', joinCommunity);
 
 router.get('/communities/all', getUserCommunities);
 
