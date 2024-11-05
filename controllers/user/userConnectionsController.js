@@ -50,9 +50,9 @@ exports.getConnections = async (req, res) => {
   try {
     // Check if the user exists
     const userExists = await User.findById(userId);
-    if (!userExists) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+    // if (!userExists) {
+    //   return res.status(404).json({ message: 'User not found' });
+    // }
 
     // Find all connections where user1 or user2 is the given userId and status is accepted
     const connections = await Connection.find({
