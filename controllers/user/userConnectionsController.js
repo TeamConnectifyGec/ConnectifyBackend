@@ -5,10 +5,11 @@ const User = require('../../models/userModel');
 
 // Route to add a new connection
 exports.addConnection =  async (req, res) => {
-  const { user1, user2 } = req.body;
+  const user1 = req.user._id; // Get user1 from auth middleware
+  const { user2 } = req.body;
 
-  if (!user1 || !user2) {
-    return res.status(400).json({ message: 'Both user1 and user2 are required' });
+  if (!user2) {
+    return res.status(400).json({ message: 'User2 is required' });
   }
 
   try {
@@ -73,8 +74,6 @@ exports.getConnections = async (req, res) => {
   }
 };
 
-
-
 // Route to get a user's connection count
 exports.getConnectionsCount = async (req, res) => {
   const userId  = req.user._id;
@@ -98,4 +97,3 @@ exports.getConnectionsCount = async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
-
