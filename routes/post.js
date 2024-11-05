@@ -4,6 +4,6 @@ const router = express.Router();
 const {addLike} = require('../controllers/post/postLikeController');
 
 
-router.get('/like', addLike);
+router.post('/like', addLike);
 
 module.exports = router;
