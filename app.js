@@ -10,7 +10,8 @@ const authRouter = require('./routes/auth');
 const passwordRouter = require('./routes/password');
 const userRouter = require('./routes/user');
 const searchRouter = require('./routes/search');
-const {createCommunity} = require('./controllers/communityController')
+const {createCommunity} = require('./controllers/communityController');
+const post = require('./routes/post');
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.use('/api/password', passwordRouter);
 app.use('/api/user',userRouter);
 app.use('/api/search',searchRouter);
 app.use('/api/communities/create',createCommunity);
+app.use('/api/post',post);
 
 // Error handling middleware
 app.use(errorHandler);

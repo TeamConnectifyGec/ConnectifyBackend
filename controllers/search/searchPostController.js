@@ -1,8 +1,10 @@
 const Post = require('../../models/postModel');  // Assuming the Post model is in the models folder
+const Like = require('../../models/likeModel');  // Assuming the Like model is in the models folder
 
 exports.searchPosts = async (req, res) => {
   try {
     const { searchTerm } = req.body; // Get search term from request body
+    const userId = req.user._id; // Get user ID from request (auth middleware)
 
     if (!searchTerm) {
       return res.status(400).json({ message: 'Search term is required' });
@@ -23,8 +25,20 @@ exports.searchPosts = async (req, res) => {
       return res.status(404).json({ message: 'No posts found' });
     }
 
-    // Return the array of posts
-    res.json(posts);
+    // Create a response array with the required details
+    const responsePosts = await Promise.all(posts.map(async (post) => {
+      const likeCount = await Like.countDocuments({ post_id: post._id });
+      const userLiked = await Like.findOne({ post_id: post._id, user_id: userId }) ? true : false;
+
+      return {
+        ...post.toObject(),
+        likeCount,
+        userLiked
+      };
+    }));
+
+    // Return the array of posts with like details
+    res.json(responsePosts);
 
   } catch (error) {
     console.error(`Error during search: ${error.message}`);
