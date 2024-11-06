@@ -38,11 +38,13 @@ exports.getUserFeed = async (req, res) => {
     const responsePosts = await Promise.all(posts.map(async (post) => {
       const likeCount = await Like.countDocuments({ post_id: post._id });
       const userLiked = await Like.findOne({ post_id: post._id, user_id: userId }) ? true : false;
+      const commentCount = await Comment.countDocuments({ post_id: post._id });
 
       return {
         ...post.toObject(),
         likeCount,
-        userLiked
+        userLiked,
+        commentCount
       };
     }));
 
