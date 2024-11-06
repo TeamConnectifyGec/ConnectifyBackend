@@ -148,7 +148,7 @@ exports.cancelConnection = async (req, res) => {
     }
 
     // Remove the connection
-    await connection.remove();
+    await Connection.findByIdAndDelete(connectionId);
 
     return res.status(200).json({ message: 'Connection request canceled' });
   } catch (error) {
@@ -177,7 +177,7 @@ exports.rejectConnection = async (req, res) => {
     }
 
     // Remove the connection
-    await connection.remove();
+    await Connection.findByIdAndDelete(connectionId);
 
     return res.status(200).json({ message: 'Connection request rejected' });
   } catch (error) {
