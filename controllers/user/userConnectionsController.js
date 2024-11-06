@@ -157,7 +157,6 @@ exports.cancelConnection = async (req, res) => {
   }
 };
 
-const Connection = require('../../models/connectionsModel');
 
 // Controller to reject a connection request
 exports.rejectConnection = async (req, res) => {
