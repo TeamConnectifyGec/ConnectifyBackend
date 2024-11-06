@@ -31,9 +31,9 @@ router.get('/connections/count', getConnectionsCount);
 
 router.post('/connections/accept', acceptConnection);
 
-router.get('/connections/cancle', cancelConnection);
+router.post('/connections/cancle', cancelConnection);
 
-router.get('/connections/reject', rejectConnection);
+router.post('/connections/reject', rejectConnection);
 
 //communities
 router.post('/communities/join', joinCommunity);

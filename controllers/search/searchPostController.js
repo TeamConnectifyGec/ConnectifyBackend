@@ -1,5 +1,6 @@
 const Post = require('../../models/postModel');  // Assuming the Post model is in the models folder
 const Like = require('../../models/likeModel');  // Assuming the Like model is in the models folder
+const Comment = require('../../models/commentModel');  // Assuming the Comment model is in the models folder
 
 exports.searchPosts = async (req, res) => {
   try {
@@ -29,15 +30,17 @@ exports.searchPosts = async (req, res) => {
     const responsePosts = await Promise.all(posts.map(async (post) => {
       const likeCount = await Like.countDocuments({ post_id: post._id });
       const userLiked = await Like.findOne({ post_id: post._id, user_id: userId }) ? true : false;
+      const commentCount = await Comment.countDocuments({ post_id: post._id });
 
       return {
         ...post.toObject(),
         likeCount,
-        userLiked
+        userLiked,
+        commentCount
       };
     }));
 
-    // Return the array of posts with like details
+    // Return the array of posts with like and comment details
     res.json(responsePosts);
 
   } catch (error) {
