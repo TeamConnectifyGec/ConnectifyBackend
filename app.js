@@ -12,7 +12,7 @@ const userRouter = require('./routes/user');
 const searchRouter = require('./routes/search');
 const {createCommunity} = require('./controllers/communityController');
 const post = require('./routes/post');
-const notificatoin = require('./routes/notification');
+const notification = require('./routes/notification');
 
 const app = express();
 
@@ -41,7 +41,7 @@ app.use('/api/user',userRouter);
 app.use('/api/search',searchRouter);
 // app.use('/api/communities/create',createCommunity);
 app.use('/api/post',post);
-app.use('/api/notification',notificatoin);
+app.use('/api/notification',notification);
 
 
 // Error handling middleware
