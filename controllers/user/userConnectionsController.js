@@ -97,3 +97,92 @@ exports.getConnectionsCount = async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+
+// Controller to accept a connection request
+exports.acceptConnection = async (req, res) => {
+  const userId = req.user._id;
+  const { connectionId } = req.body;
+
+  try {
+    // Find the connection by ID
+    const connection = await Connection.findById(connectionId);
+
+    if (!connection) {
+      return res.status(404).json({ message: 'Connection not found' });
+    }
+
+    // Check if the current user is either user1 or user2 in the connection
+    if (connection.user1.toString() !== userId.toString() && connection.user2.toString() !== userId.toString()) {
+      return res.status(403).json({ message: 'You are not authorized to accept this connection request' });
+    }
+
+    // Update the connection status to 'accepted'
+    connection.status = 'accepted';
+    await connection.save();
+
+    return res.status(200).json({ message: 'Connection request accepted', connection });
+  } catch (error) {
+    console.error('Error accepting connection:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+// Controller to cancel a connection request
+exports.cancelConnection = async (req, res) => {
+  const userId = req.user._id;
+  const { connectionId } = req.body;
+
+  try {
+    // Find the connection by ID
+    const connection = await Connection.findById(connectionId);
+
+    if (!connection) {
+      return res.status(404).json({ message: 'Connection not found' });
+    }
+
+    // Check if the current user is either user1 or user2 in the connection
+    if (connection.user1.toString() !== userId.toString() && connection.user2.toString() !== userId.toString()) {
+      return res.status(403).json({ message: 'You are not authorized to cancel this connection request' });
+    }
+
+    // Remove the connection
+    await connection.remove();
+
+    return res.status(200).json({ message: 'Connection request canceled' });
+  } catch (error) {
+    console.error('Error canceling connection:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+const Connection = require('../../models/connectionsModel');
+
+// Controller to reject a connection request
+exports.rejectConnection = async (req, res) => {
+  const userId = req.user._id;
+  const { connectionId } = req.body;
+
+  try {
+    // Find the connection by ID
+    const connection = await Connection.findById(connectionId);
+
+    if (!connection) {
+      return res.status(404).json({ message: 'Connection not found' });
+    }
+
+    // Check if the current user is either user1 or user2 in the connection
+    if (connection.user2.toString() !== userId.toString()) {
+      return res.status(403).json({ message: 'You are not authorized to reject this connection request' });
+    }
+
+    // Remove the connection
+    await connection.remove();
+
+    return res.status(200).json({ message: 'Connection request rejected' });
+  } catch (error) {
+    console.error('Error rejecting connection:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
