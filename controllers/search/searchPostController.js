@@ -1,6 +1,6 @@
-const Post = require('../../models/postModel');  // Assuming the Post model is in the models folder
-const Like = require('../../models/likeModel');  // Assuming the Like model is in the models folder
-const Comment = require('../../models/commentModel');  // Assuming the Comment model is in the models folder
+const Post = require('../../models/postModel'); 
+const Like = require('../../models/likeModel');  
+const Comment = require('../../models/commentModel');
 
 exports.searchPosts = async (req, res) => {
   try {
